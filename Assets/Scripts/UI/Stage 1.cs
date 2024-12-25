@@ -1,14 +1,8 @@
 using System.Collections;
-using TMPro;
-using UnityEngine;
-using UnityEngine.UI;
 
-public class Stage1 : MonoBehaviour
+public class Stage1 : Console
 {
-    public GameObject panel1;
-    public GameObject panel2;
-    public TextMeshProUGUI outputText;  // Текстовый компонент для отображения строк
-    public Slider progressBar; // Полоса прогресса
+
     private string[] loadingTexts = new string[]
     {
         "   \r\nInitializing hardware:\r\n  - Verifying CPU, memory, and other critical components\r\n Loading BIOS:\r\n  - Reading the Basic Input/Output System (BIOS) from non-volatile memory (typically ROM)\r\n Configuring hardware:\r\n  - Setting up system memory, interrupt controllers, and peripheral devices\r\n Performing device detection:\r\n  - Identifying and configuring connected storage devices, network cards, etc...",
@@ -19,47 +13,19 @@ public class Stage1 : MonoBehaviour
 
     private void Start()
     {
+        outputText.text += "\n\nLoading... Please wait...\n";
+        progressBar.gameObject.SetActive(true); 
         StartCoroutine(One());
     }
 
     private IEnumerator One()
     {
-        // Этап 1: Выводим строки загрузки
-        foreach (string line in loadingTexts)
-        {
-            outputText.text += line + "\n";  // Добавляем строку в текст
-            yield return new WaitForSeconds(1f);  // Задержка между строками
-        }
+        yield return StartCoroutine(PrintText(outputText, loadingTexts));
 
-        // Этап 2: Полоса прогресса
-        outputText.text += "\n\nLoading... Please wait...\n"; // Пишем статус
-        progressBar.gameObject.SetActive(true); // Показываем полоску прогресса
-        yield return StartCoroutine(ShowProgressBar());
+
+        yield return StartCoroutine(ShowProgressBar(progressBar, panel_A, panel_B));
 
     }
 
-    // Этап заполнения полосы прогресса
-    private IEnumerator ShowProgressBar()
-    {
-        float progress = 0f;
-        while (progress < 1f)
-        {
-            if (progress < 0.9f)
-            {
-                progress += Time.deltaTime * 0.4f;  // Заполнение прогресса
-                progressBar.value = progress;
-            }
-            else
-            {
-                progress += Time.deltaTime * 0.05f;  // Заполнение прогресса
-                progressBar.value = progress;
-            }
-
-            yield return null;  // Ждем один кадр
-        }
- 
-        panel1.SetActive(false);
-        panel2.SetActive(true);
-        
-    }
+    
 }
