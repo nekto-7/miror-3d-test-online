@@ -1,5 +1,13 @@
 {
     "files.exclude": {
+        "**/Library": true,
+        "**/Temp": true,
+        "**/Logs": true,
+        "**/ProjectSettings": true,
+        "**/UserSettings": true,
+        "**/obj": true,
+        "**/Build": true,
+        "**/build": true,
         "**/.DS_Store": true,
         "**/.git": true,
         "**/.vs": true,
@@ -42,19 +50,27 @@
         "**/*.mat": true,
         "**/*.meta": true,
         "**/*.prefab": true,
-        "**/*.unity": true,
-        "build/": true,
-        "Build/": true,
-        "Library/": true,
-        "library/": true,
-        "obj/": true,
-        "Obj/": true,
-        "Logs/": true,
-        "logs/": true,
-        "ProjectSettings/": true,
-        "UserSettings/": true,
-        "temp/": true,
-        "Temp/": true
+        "**/*.unity": true
+    },
+    "search.exclude": {
+        "**/Library": true,
+        "**/Temp": true,
+        "**/Logs": true,
+        "**/ProjectSettings": true,
+        "**/UserSettings": true,
+        "**/obj": true,
+        "**/Build": true,
+        "**/build": true
+    },
+    "files.watcherExclude": {
+        "**/Library/**": true,
+        "**/Temp/**": true,
+        "**/Logs/**": true,
+        "**/ProjectSettings/**": true,
+        "**/UserSettings/**": true,
+        "**/obj/**": true,
+        "**/Build/**": true,
+        "**/build/**": true
     },
     "dotnet.defaultSolution": "miror-3d-test-online.sln",
     "FSharp.suggestGitignore": false

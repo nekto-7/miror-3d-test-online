@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3271749980749821599}
   - component: {fileID: 7503648066680035766}
   - component: {fileID: 1139121036826654948}
-  - component: {fileID: 5066447524978083136}
+  - component: {fileID: 3495701982891567403}
   m_Layer: 0
   m_Name: Turn manager
   m_TagString: Untagged
@@ -67,7 +67,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   MatchID: 
---- !u!114 &5066447524978083136
+--- !u!114 &3495701982891567403
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -76,6 +76,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 6245190684773632665}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 693bdadd7972715409485fe2a81462b0, type: 3}
+  m_Script: {fileID: 11500000, guid: b714bc450fb3b2a43a3939c76548532f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
