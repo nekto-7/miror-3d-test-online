@@ -11,15 +11,23 @@ public class Player : NetworkBehaviour
     [SyncVar] public string matchID;
     private NetworkMatch networkMatch;
 
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+        
+        // This ensures the local player is set as soon as the client starts
+        if (isLocalPlayer)
+        {
+            localPlayer = this;
+            Debug.Log("Local player initialized!");
+        }
+    }
+
     private void Start() 
     {
         networkMatch = GetComponent<NetworkMatch>();
 
-        if (isLocalPlayer)
-        {
-            localPlayer = this;
-        }
-        else
+        if (!isLocalPlayer)
         {
             MatchMaking.instance.SpawnPlayerUIPPrefub(this);
         }

@@ -1,18 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CanvasON : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public GameObject canvas;
     void Start()
     {
-        
+        canvas.SetActive(true);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+ 
 }

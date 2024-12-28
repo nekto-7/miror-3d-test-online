@@ -1,12 +1,10 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 using UnityEngine.UI;
 using System;
 using System.Security.Cryptography;
-using System.Text;
-using UnityEngine.Windows;
+using System.Text; 
 using TMPro;
 
 [System.Serializable] // save data match
@@ -74,9 +72,15 @@ public class MatchMaking : NetworkBehaviour
     }
 
     #region  HOST
-    
+        
     public void Host()
     {
+        if (Player.localPlayer == null)
+        {
+            Debug.LogError("Local player not initialized!");
+            return;
+        }
+        
         joinInput.interactable = false;
         hostButton.interactable = false;        
         joinButton.interactable = false;
@@ -119,6 +123,12 @@ public class MatchMaking : NetworkBehaviour
     #region  JOIN
     public void Join()
     {
+        if (Player.localPlayer == null)
+        {
+            Debug.LogError("Local player not initialized!");
+            return;
+        }
+        
         joinInput.interactable = false;
         hostButton.interactable = false;        
         joinButton.interactable = false;
