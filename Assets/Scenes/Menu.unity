@@ -1446,7 +1446,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b0fecffa3f624585964b0d0eb21b18e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  port: 7777
+  port: 7770
   DualMode: 1
   NoDelay: 1
   Interval: 10
@@ -1479,7 +1479,7 @@ MonoBehaviour:
   runInBackground: 1
   headlessStartMode: 0
   editorAutoStart: 0
-  sendRate: 60
+  sendRate: 10
   offlineScene: Assets/Scenes/Menu.unity
   onlineScene: Assets/Scenes/RoomUI.unity
   offlineSceneLoadDelay: 0
@@ -1489,7 +1489,7 @@ MonoBehaviour:
   disconnectInactiveConnections: 0
   disconnectInactiveTimeout: 60
   authenticator: {fileID: 0}
-  playerPrefab: {fileID: 4383392775686324967, guid: ce67dfd15866c474d8a93617c2b120a9, type: 3}
+  playerPrefab: {fileID: 8953486976950435371, guid: 0290722e82e08f14a908c105ab232e20, type: 3}
   autoCreatePlayer: 1
   playerSpawnMethod: 0
   spawnPrefabs:

@@ -6,6 +6,9 @@ public class CanvasON : MonoBehaviour
     void Start()
     {
         canvas.SetActive(true);
+        Cursor.visible = true; 
+        Cursor.lockState = CursorLockMode.None;
+        
     }
 
  
