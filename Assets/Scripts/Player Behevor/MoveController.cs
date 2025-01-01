@@ -1,104 +1,42 @@
+using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
 public class MoveController : NetworkBehaviour
 {
-    public float gravity = -9.8f;
-    public float speed = 15.0f;
-    public float sprintSpeed = 20.0f;
-    public float jumpForce = 15.0f;
-    public bool CanMove = true;
+    public float speed = 5;
+    [Header("Running")]
+    public bool canRun = true;
+    public bool IsRunning { get; private set; }
+    public float runSpeed = 9;
+    public KeyCode runningKey = KeyCode.LeftShift;
 
-    public Transform cameraTransform; // Ссылка на камеру (локального игрока)
+    private Rigidbody _rb;
+    public List<System.Func<float>> speedOverrides = new List<System.Func<float>>();
 
-    private CharacterController cc;
-    private float jspeed = 0.0f;
-    private float currentSpeed; // Текущая скорость
 
-    private void Awake()
+
+    void Awake()
     {
-        cc = GetComponent<CharacterController>();
-        currentSpeed = speed; 
-    }
-
-    public override void OnStartLocalPlayer()
-    {
-        base.OnStartLocalPlayer();
- 
-        if (cameraTransform != null)
-        {
-            cameraTransform.gameObject.SetActive(true);
-        }
+        _rb = GetComponent<Rigidbody>();
     }
 
     private void Update()
     {
-        // Проверяем, является ли это локальный игрок
-        if (!isLocalPlayer || !CanMove) return;
-
-        // Обновляем движение
-        Vector3 movement = CalculateMovement();
-
-        // Применяем гравитацию
-        ApplyGravity(ref movement);
-
-        // Двигаем игрока
-        cc.Move(movement * Time.deltaTime);
+       if (!isLocalPlayer) return;
     }
-
-    private Vector3 CalculateMovement()
+    void FixedUpdate()
     {
-        // Считываем ввод игрока
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
-
-        // Рассчитываем движение в локальных координатах
-        Vector3 direction = new Vector3(horizontal, 0, vertical);
-
-        // Нормализация для плавности движения
-        if (direction.magnitude > 1)
-            direction.Normalize();
-
-        // Преобразование направления в мировые координаты относительно камеры
-        Vector3 forward = cameraTransform.forward; // Направление вперед
-        Vector3 right = cameraTransform.right;     // Направление вправо
-
-        // Убираем вертикальную составляющую
-        forward.y = 0;
-        right.y = 0;
-
-        forward.Normalize();
-        right.Normalize();
-
-        // Итоговое направление движения
-        Vector3 moveDirection = forward * vertical + right * horizontal;
-
-        // Обработка спринта
-        if (Input.GetKey(KeyCode.LeftShift))
+         
+        IsRunning = canRun && Input.GetKey(runningKey);
+        float targetMovingSpeed = IsRunning ? runSpeed : speed;
+        if (speedOverrides.Count > 0)
         {
-            currentSpeed = sprintSpeed;
-        }
-        else
-        {
-            currentSpeed = speed;
+            targetMovingSpeed = speedOverrides[speedOverrides.Count - 1]();
         }
 
-        // Применяем текущую скорость
-        return moveDirection * currentSpeed;
-    }
+        Vector2 targetVelocity =new Vector2( Input.GetAxis("Horizontal") * targetMovingSpeed, Input.GetAxis("Vertical") * targetMovingSpeed);
 
-    private void ApplyGravity(ref Vector3 movement)
-    {
-        if (cc.isGrounded)
-        {
-            jspeed = 0;
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                jspeed = jumpForce; // Прыжок
-            }
-        }
-
-        jspeed += gravity * Time.deltaTime; // Применение гравитации
-        movement.y = jspeed; // Добавление вертикального движения
+        _rb.velocity = transform.rotation * new Vector3(targetVelocity.x, _rb.velocity.y, targetVelocity.y);
     }
 }

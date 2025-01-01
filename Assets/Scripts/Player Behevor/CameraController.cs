@@ -1,58 +1,43 @@
 using UnityEngine;
-
-public class CameraController : MonoBehaviour
+using Mirror;
+public class CameraController : NetworkBehaviour
 {
-    public enum RorationAxes
+    public float sensitivity = 2;
+    public float smoothing = 1.5f;
+    public float distanceCamera = 0;
+    [SerializeField] 
+    private Transform _tr;
+    private Vector2 velocity;
+    private Vector2 frameVelocity;   
+    void Reset()
     {
-        XandY,
-        X,
-        Y
+        _tr = GetComponentInParent<CameraController>().transform;
     }
-    public RorationAxes _axes = RorationAxes.XandY;
-    public float _rotationSpeedHor = 5.0f;
-    public float _rotationSpeedVer = 5.0f;
-
-    public float maxVert = 45.0f;
-    public float minVert = -45.0f;
-
-    private float _rotationX = 0;
-
-
-    private void Start()
+    void Start()
     {
-        Rigidbody body = GetComponent<Rigidbody>();
-        if (body != null)
-            body.freezeRotation = true;
-
         Cursor.lockState = CursorLockMode.Locked;
     }
-
-    private void Update()
+    void Update()
     {
-        if (_axes == RorationAxes.XandY)
-        {
-            _rotationX -= Input.GetAxis("Mouse Y") * _rotationSpeedVer;
-            _rotationX = Mathf.Clamp(_rotationX, minVert, maxVert);
-
-            float delta = Input.GetAxis("Mouse X") * _rotationSpeedHor;
-            float _rotationY = transform.localEulerAngles.y + delta;
-
-            transform.localEulerAngles = new Vector3(_rotationX, _rotationY, 0);
-        }
-        else if (_axes == RorationAxes.X)
-        {
-            transform.Rotate(0, Input.GetAxis("Mouse X") * _rotationSpeedHor, 0);
-        }
-        else if (_axes == RorationAxes.Y)
-        {
-            _rotationX -= Input.GetAxis("Mouse Y") * _rotationSpeedVer;
-            _rotationX = Mathf.Clamp(_rotationX, minVert, maxVert);
-
-            float _rotationY = transform.localEulerAngles.y;
-
-            transform.localEulerAngles = new Vector3(_rotationX, _rotationY, 0);
-
-        }
+        if (!isLocalPlayer) return;
+        Vector2 mouseDelta = new Vector2(Input.GetAxisRaw("Mouse X"), -Input.GetAxisRaw("Mouse Y"));
+        Vector2 rawFrameVelocity = Vector2.Scale(mouseDelta, Vector2.one * sensitivity);
+        frameVelocity = Vector2.Lerp(frameVelocity, rawFrameVelocity, 1 / smoothing);
+        velocity += frameVelocity;
+        velocity.y = Mathf.Clamp(velocity.y, -90, 90);
+        transform.localRotation = Quaternion.AngleAxis(-velocity.y, Vector3.right);
+        _tr.localRotation = Quaternion.AngleAxis(velocity.x, Vector3.up);
     }
-    
+    void LateUpdate()
+    {
+        if (!isLocalPlayer) return;
+
+        transform.position = _tr.position + Vector3.up * distanceCamera; // 1.5f - это примерное расстояние от головы до камеры
+        transform.rotation = _tr.rotation;
+
+        transform.Rotate(Vector3.right, velocity.y);
+        _tr.Rotate(Vector3.up, velocity.x);
+
+        frameVelocity = Vector2.zero;
+    }
 }

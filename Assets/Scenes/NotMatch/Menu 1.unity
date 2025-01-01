@@ -1467,7 +1467,7 @@ MonoBehaviour:
   headlessStartMode: 0
   editorAutoStart: 0
   sendRate: 60
-  offlineScene: Assets/Scenes/Menu.unity
+  offlineScene: Assets/Scenes/NotMatch/Menu 1.unity
   onlineScene: Assets/Scenes/NotMatch/Game 1.unity
   offlineSceneLoadDelay: 0
   transport: {fileID: 1096225141}
@@ -1476,7 +1476,7 @@ MonoBehaviour:
   disconnectInactiveConnections: 0
   disconnectInactiveTimeout: 60
   authenticator: {fileID: 0}
-  playerPrefab: {fileID: 8953486976950435371, guid: 0290722e82e08f14a908c105ab232e20, type: 3}
+  playerPrefab: {fileID: 1773623360729482, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
   autoCreatePlayer: 1
   playerSpawnMethod: 0
   spawnPrefabs:
