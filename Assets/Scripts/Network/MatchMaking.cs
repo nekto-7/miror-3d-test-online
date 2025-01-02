@@ -25,13 +25,14 @@ public static class MatchException
 {
     public static Guid ToGuid(this string id)
     {
-        MD5CryptoServiceProvider provider = new MD5CryptoServiceProvider();
-        byte[] inputBytes = Encoding.Default.GetBytes(id);
-        byte[] hesBytes = provider.ComputeHash(inputBytes);
-
-        return new Guid(hesBytes);
-    }   
-
+        using (MD5CryptoServiceProvider provider = new MD5CryptoServiceProvider())
+        {
+            byte[] inputBytes = Encoding.UTF8.GetBytes(id);
+            byte[] hashBytes = provider.ComputeHash(inputBytes);
+            
+            return new Guid(hashBytes);
+        }
+    }
 }
 
 public class MatchMaking : NetworkBehaviour
@@ -75,9 +76,9 @@ public class MatchMaking : NetworkBehaviour
         
     public void Host()
     {
-        if (Player.localPlayer == null)
+        if (Player.localPlayer == null || !Player.localPlayer.IsNetworkReady())
         {
-            Debug.LogError("Local player not initialized!");
+            Debug.LogError("Игрок не готов к сетевому взаимодействию! Убедитесь, что вы подключены к серверу и имеете необходимые права.");
             return;
         }
         
@@ -224,5 +225,10 @@ public class MatchMaking : NetworkBehaviour
                 break;
             }
         }
+    }
+    public void CopyText()
+    { 
+        string textToCopy = IDText.text;  
+        GUIUtility.systemCopyBuffer = textToCopy; 
     }
 }

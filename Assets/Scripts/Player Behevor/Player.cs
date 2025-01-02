@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 using Mirror;
 using UnityEngine.SceneManagement;
 public class Player : NetworkBehaviour
@@ -21,6 +17,13 @@ public class Player : NetworkBehaviour
             localPlayer = this;
             Debug.Log("Local player initialized!");
         }
+    }
+
+    public override void OnStartAuthority()
+    {
+        base.OnStartAuthority();
+        localPlayer = this;
+        Debug.Log("Player authority assigned - player fully initialized!");
     }
 
     private void Start() 
@@ -100,8 +103,6 @@ public class Player : NetworkBehaviour
 
     #endregion _________________________________________________________
 
-    // local scale player !!
-    // SceneManager.LoadScene("Game", LoadSceneMode.Additive); !!
     #region BEGIN
 
     public void BeginGame()
@@ -123,7 +124,7 @@ public class Player : NetworkBehaviour
         DontDestroyOnLoad(gameObject);
         MatchMaking.instance.inGame = true;
         transform.localScale = new Vector3(1, 1, 1);
-        SceneManager.LoadScene("Game", LoadSceneMode.Additive);
+        SceneManager.LoadScene(2, LoadSceneMode.Additive);
     }
     public void StartGame()
     {
@@ -131,6 +132,9 @@ public class Player : NetworkBehaviour
     }
     #endregion _________________________________________________________
 
-    
+    public bool IsNetworkReady()
+    {
+        return isLocalPlayer && NetworkClient.isConnected;
+    }
 
 }

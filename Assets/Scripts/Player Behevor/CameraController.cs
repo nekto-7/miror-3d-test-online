@@ -13,10 +13,7 @@ public class CameraController : NetworkBehaviour
     {
         _tr = GetComponentInParent<CameraController>().transform;
     }
-    void Start()
-    {
-        Cursor.lockState = CursorLockMode.Locked;
-    }
+
     void Update()
     {
         if (!isLocalPlayer) return;

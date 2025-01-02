@@ -1,12 +1,12 @@
-using System.Collections;
 using UnityEngine;
 using TMPro;
 using Mirror;
-using UnityEngine.SceneManagement;
 
 public class Stage2 : Console
 {
     public TMP_InputField inputField;
+    public Connection connection;
+    public NetworkManager networkManager;
     string[] loadingTexts = new string[]
     {
         "\rInitializing user interface:\r\n  - Displaying a login prompt on the console or graphical user interface (GUI)\r\n Waiting for user input:\n",
@@ -21,16 +21,7 @@ public class Stage2 : Console
     };
     string[] amogus = new string[]
     {
-        "\n         ..⠂'''::⠀⠀",
-        "⠀⠀⠀⠀..:'::⠀⠀⠀⠀⠀⠀ ':⠀",
-        "⠀⠀:'' .''⠀⠀⠀⠀⠀⠀:'''':",
-        "⠀:'⠀ :⠁⠀⠀⠀⠀⠀⠀⠀::..:⠀",
-        ":⠀⠀ ⠨⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀:⠀⠀⠀",
-        "⠀': :⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀:⠀⠀⠀",
-        "⠀⠀::⠀⠀⠀'''':⠀⠀ :⠀⠀⠀⠀",
-        "⠀⠀:⠀⠀⠀:⠀⠀:⠀⠀⠀ :⠀⠀⠀ ",
-        "⠀⠀⠀:⠀⠄⠠:⠀⠀::⠀⠀:⠀⠀⠀",
-        "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀'''''⠀.⠀"
+        "\nAMOGUS"
     };
 
     void Start()
@@ -39,15 +30,14 @@ public class Stage2 : Console
         inputField.onEndEdit.AddListener(OnCommandEntered);  
 
     }
+
     private void DisplayLoadingText()
     {
         StartCoroutine(PrintText(outputText, loadingTexts));  
  
-        inputField.gameObject.SetActive(true); // Âêëþ÷àåì ïîëå ââîäà
-        inputField.ActivateInputField(); // Àêòèâèðóåì êóðñîð
+        inputField.gameObject.SetActive(true); 
+        inputField.ActivateInputField();  
     }
-
-
 
     private void OnCommandEntered(string command)
     {
@@ -64,16 +54,22 @@ public class Stage2 : Console
                 break;
 
             case "help":
-                outputText.text += "\n>> Available commands: help, play, exit, create, join";
+                outputText.text += "\n>> List of commands:\n server - create a server;\n client - log in as a Client;\n exit - turn off the OS";
                 break;
 
-            case "start":
-                StartGame();
+            case "server":
+                Host();
+                break;
+
+
+            case "client":
+                Client();
                 break;
 
             case "amogus":
                 StartCoroutine(PrintText(outputText, amogus));
                 break;
+
             default:
                 outputText.text += "\n>> Unknown command! Try again.";
                 break;
@@ -82,10 +78,15 @@ public class Stage2 : Console
         inputField.text = ""; 
         inputField.ActivateInputField();  
     }
- 
-    private void StartGame()
+     private void Host()
     {
-        SceneManager.LoadScene(1);
+        networkManager.StartHost();
+        outputText.text += "\n>> load HOST";
+    }
+    private void Client()
+    {
+        outputText.text += "\n>> load CLIENT";
     } 
+
  
 }
